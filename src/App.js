@@ -16,9 +16,9 @@ const LACRMForm = styled('form')`
   }
 `
 
-const NoteForm = () => {
+const NoteForm = ({setRoute}) => {
   const {register, handleSubmit, errors } = useForm();
-  const onSubmit = data => console.log(data)
+  const onSubmit = data => setRoute('login')
 
   return (
     <LACRMForm onSubmit={handleSubmit(onSubmit)}>
@@ -47,11 +47,12 @@ const Login = () => {
 const Complete = () => {}
 
 export const App = () => {
-  const [route, setRoute] = useState('login')
+  const [route, setRoute] = useState('form')
+
 
   const routes = {
-    form: <NoteForm />,
-    login: <Login />,
+    form: <NoteForm  setRoute={setRoute} />,
+    login: <Login/>,
     complete: <Complete />,
   }
 
