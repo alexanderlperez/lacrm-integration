@@ -3,39 +3,65 @@ import styled from '@emotion/styled'
 import { useForm } from 'react-hook-form'
 import superagent from 'superagent'
 
-// import firebase from 'firebase/app'
-// import 'firebase/auth'
-// import firebaseConfig from './firebaseConfig.js'
-// import FirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
-// 
-// firebase.initializeApp(firebaseConfig);
-
-const CF_URL = "https://us-central1-lacrm-integration.cloudfunctions.net/createNote"
-//const CF_URL = "http://127.0.0.1:5001/lacrm-integration/us-central1/createNote"
+// const CF_URL = "https://us-central1-lacrm-integration.cloudfunctions.net/api"
+const CF_URL = "http://127.0.0.1:5001/lacrm-integration/us-central1/api"
 
 const LACRMForm = styled('form')`
+  width: 400px; 
+  display: flex;
+  flex-direction: column;
+
   & > * {
       display: block;
   }
 
+  .item {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+
   textarea, input, select {
-    margin-left: 1em;
+    box-sizing: border-box;
+    width: 300px;
+  }
+
+  .submit {
+    margin-top: 10px;
+    width: 90px;
+    height: 30px;
+    align-self: flex-end;
+  }
+
+  #note {
+    height: 100px;
   }
 `
 
+const maybeEmpty = (str, last) => 
+  str 
+    ? str + (last ? '' : ' ') 
+    : ''
+
 const NoteForm = ({setRoute}) => {
-  const {register, handleSubmit, errors } = useForm();
+  const {register, handleSubmit } = useForm();
   const [hasError, setHasError] = useState(false)
+  const [churchMembers, setChurchMembers] = useState([])
+
+  console.log(churchMembers)
+
+  useEffect(() => {
+    superagent
+      .get(CF_URL + '/allContacts')
+      .catch(() => setHasError(true))
+      .then(res => setChurchMembers(res.body))
+  }, [])
 
   const onSubmit = data => {
-    const out = superagent
-      .get(CF_URL)
-      .query({ 
-        ...data,
-      })
-      .catch(() => {
-        setHasError(true)
-      })
+    superagent
+      .get(CF_URL + '/createNote')
+      .query({ ...data })
+      .catch(() => setHasError(true))
       .then(res => {
         const { Success: success } = JSON.parse(res.text)
         console.log(res, success)
@@ -51,29 +77,40 @@ const NoteForm = ({setRoute}) => {
   }
 
   const ErrorMsg = styled.div`
+    margin-top: 10px;
     display: ${props => props.isVisible ? 'block' : 'none'};
     color: red;
   `
 
   return (
     <LACRMForm onSubmit={handleSubmit(onSubmit)}>
-      <label htmlFor="churchMember">
-        Church Member: 
+      <div className="item">
+        <label htmlFor="churchMember">For Church Member:</label>
         <select id="churchMember" name="churchMember" ref={register} required="true">
+          {/* TODO: Will be populated with members from API */}
           <option value="">Select a church member</option>
+          {churchMembers.length && churchMembers.map(m => (
+            <option value={m.ContactId}>{[m.Salutation, m.FirstName, m.LastName, m.Suffix].map((str, i, a) => maybeEmpty(str, i === a.length - 1))}</option>
+          ))}
+        </select>
+      </div>
+
+      <div className="item">
+        <label htmlFor="teamMember">From Pastoral Care Team Member:</label>
+        <select id="teamMember" name="teamMember" ref={register} required="true">
+          {/* TODO: Will be populated with members from API */}
+          <option value="">Select a team member</option>
           <option value="3726268736538631475369381625468">Alex Perez</option>
         </select>
-      </label>
-      <label htmlFor="email">
-        Your Email: 
-        <input type="text" id="email" ref={register} name="email" required="true"/>
-      </label>
-      <label htmlFor="note">
-        Note:
-        <textarea id="name" name="note" ref={register} required="true"></textarea>
-      </label>
-      <button type="submit" name="submit" ref={register}>Submit</button>
-      <ErrorMsg isVisible={hasError}>There was an error submitting your note! Please check that your email is correct and try again</ErrorMsg>
+      </div>
+
+      <div className="item">
+        <label htmlFor="note">Note:</label>
+        <textarea id="note" name="note" ref={register} required="true"></textarea>
+      </div>
+
+      <button class="submit" type="submit" name="submit" ref={register}>Submit</button>
+      <ErrorMsg isVisible={hasError}>There was an error submitting your note. Please refresh the page and try again.</ErrorMsg>
     </LACRMForm>
   )
 }

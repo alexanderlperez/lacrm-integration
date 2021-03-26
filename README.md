@@ -18,3 +18,19 @@ Dev/Running:
 
 1. Start the firebase emulator: `yarn run emulate` 
 2. Start the project `yarn run start`
+
+### Integration
+
+```
+<style>#note { display: block; position: relative; margin: 0 auto; height: 300px; width: 350px; overflow: hidden;}
+textarea { height: 100px; width: 300px
+</style>
+
+<div id="note">
+
+<h2>Create a Note</h2>
+<div id="root"></div>
+
+</div>
+<script async src="https://cdn.jsdelivr.net/gh/alexanderlperez/lacrm-integration@latest/dist/lacrm-integration.197c8d16.js"></script>
+```
