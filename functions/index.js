@@ -11,6 +11,8 @@ const app = express();
 
 const API_URL = 'https://api.lessannoyingcrm.com/'
 
+// TODO: put these values in a .env file and make them switchable at deploy time
+
 // Production Test Data
 const USER_CODE = '95E24'
 const API_KEY = '613924-AgfdG3fCxn2wJpsHJNIbmQqMGBMkKEp2OYZSAISsRG3zvxwj0X' 

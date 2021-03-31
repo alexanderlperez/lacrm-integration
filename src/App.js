@@ -3,8 +3,9 @@ import styled from '@emotion/styled'
 import { useForm } from 'react-hook-form'
 import superagent from 'superagent'
 
-// const CF_URL = "https://us-central1-lacrm-integration.cloudfunctions.net/api"
-const CF_URL = "http://127.0.0.1:5001/lacrm-integration/us-central1/api"
+// TODO: put these values in a .env file and make them switchable at deploy time
+const CF_URL = "https://us-central1-lacrm-integration.cloudfunctions.net/api"
+// const CF_URL = "http://127.0.0.1:5001/lacrm-integration/us-central1/api"
 
 const LACRMForm = styled('form')`
   width: 550px; 
