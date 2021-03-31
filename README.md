@@ -19,6 +19,14 @@ Dev/Running:
 1. Start the firebase emulator: `yarn run emulate` 
 2. Start the project `yarn run start`
 
+Deploying:
+
+** NOTE: make sure to save all Cloud Functions dependencies explicitly in the `functions/` folder with `npm install ...`
+
+1. run `yarn run build`
+2. Save the latest .js and .js.map from `dist/` to an accessible URL
+3. run `yarn run deploy-functions` to deploy to firebase
+
 ### Integration
 
 ```
