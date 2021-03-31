@@ -7,7 +7,7 @@ import superagent from 'superagent'
 const CF_URL = "http://127.0.0.1:5001/lacrm-integration/us-central1/api"
 
 const LACRMForm = styled('form')`
-  width: 400px; 
+  width: 550px; 
   display: flex;
   flex-direction: column;
 
@@ -47,6 +47,7 @@ const NoteForm = ({setRoute}) => {
   const {register, handleSubmit } = useForm();
   const [hasError, setHasError] = useState(false)
   const [churchMembers, setChurchMembers] = useState([])
+  const [careTeamMembers, setCareTeamMembers] = useState([])
 
   console.log(churchMembers)
 
@@ -55,6 +56,11 @@ const NoteForm = ({setRoute}) => {
       .get(CF_URL + '/allContacts')
       .catch(() => setHasError(true))
       .then(res => setChurchMembers(res.body))
+
+    superagent
+      .get(CF_URL + '/careTeamContacts')
+      .catch(() => setHasError(true))
+      .then(res => setCareTeamMembers(res.body))
   }, [])
 
   const onSubmit = data => {
@@ -100,7 +106,10 @@ const NoteForm = ({setRoute}) => {
         <select id="teamMember" name="teamMember" ref={register} required="true">
           {/* TODO: Will be populated with members from API */}
           <option value="">Select a team member</option>
-          <option value="3726268736538631475369381625468">Alex Perez</option>
+          {careTeamMembers.length && careTeamMembers.map(m => {
+              const fullName = m => [m.Salutation, m.FirstName, m.LastName, m.Suffix].map((str, i, a) => maybeEmpty(str, i === a.length - 1))
+              return <option value={fullName(m).join('')}>{fullName(m)}</option>
+          })}
         </select>
       </div>
 
