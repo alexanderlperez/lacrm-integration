@@ -49,7 +49,7 @@ const NoteForm = ({setRoute}) => {
   const [churchMembers, setChurchMembers] = useState([])
   const [careTeamMembers, setCareTeamMembers] = useState([])
 
-  console.log(churchMembers)
+  // console.log(churchMembers)
 
   useEffect(() => {
     superagent
@@ -118,8 +118,8 @@ const NoteForm = ({setRoute}) => {
         <textarea id="note" name="note" ref={register} required="true"></textarea>
       </div>
 
-      <button class="submit" type="submit" name="submit" ref={register}>Submit</button>
-      <ErrorMsg isVisible={hasError}>There was an error submitting your note. Please refresh the page and try again.</ErrorMsg>
+      <button className="submit" type="submit" name="submit" ref={register}>Submit</button>
+      <ErrorMsg isVisible={hasError}>There was an error. Please make sure you're online, refresh the page, and try again.</ErrorMsg>
     </LACRMForm>
   )
 }
