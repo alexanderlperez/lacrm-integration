@@ -5,7 +5,7 @@ import superagent from 'superagent'
 
 // TODO: put these values in a .env file and make them switchable at deploy time
 const CF_URL = "https://us-central1-lacrm-integration.cloudfunctions.net/api"
-// const CF_URL = "http://127.0.0.1:5001/lacrm-integration/us-central1/api"
+ //const CF_URL = "http://127.0.0.1:5001/lacrm-integration/us-central1/api"
 
 const LACRMForm = styled('form')`
   width: 550px; 
@@ -36,6 +36,7 @@ const LACRMForm = styled('form')`
 
   #note {
     height: 100px;
+    overflow: 
   }
 `
 
@@ -68,7 +69,10 @@ const NoteForm = ({setRoute}) => {
     superagent
       .get(CF_URL + '/createNote')
       .query({ ...data })
-      .catch(() => setHasError(true))
+      .catch((res) => {
+        console.log(res)
+        setHasError(true)
+      })
       .then(res => {
         const { Success: success } = JSON.parse(res.text)
         console.log(res, success)

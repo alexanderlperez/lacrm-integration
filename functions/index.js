@@ -31,6 +31,7 @@ const callAPI = async (func, params) => {
 
   const out = API_URL + '?' + new URLSearchParams(body).toString() + '&Parameters=' + JSON.stringify(params)
 
+  console.log('sending data')
   console.log({out})
   return superagent
     .post(out)
@@ -42,6 +43,8 @@ app.use(cors);
 app.use(bodyParser.json());
 
 app.get('/createNote', async (req, res) => {
+  console.log('got data', req.query)
+
   const { note, churchMember, teamMember } = req.query
 
   console.log({query: req.query})
@@ -49,8 +52,8 @@ app.get('/createNote', async (req, res) => {
   const out = await callAPI('CreateNote', {
     ContactId: churchMember,
     Note: 
-    `From ${teamMember.replace('&', 'and')} on ${format(utcToZonedTime(new Date(), 'America/New_York'), 'L/d/yyyy h:mmaaa')}:
-${note}
+    `From ${encodeURIComponent(teamMember)} on ${format(utcToZonedTime(new Date(), 'America/New_York'), 'L/d/yyyy h:mmaaa')}:
+${encodeURIComponent(note)}
 `
   })
 

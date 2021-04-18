@@ -25,20 +25,20 @@ Deploying:
 
 1. run `yarn run build`
 2. Save the latest .js and .js.map from `dist/` to an accessible URL
-3. run `yarn run deploy-functions` to deploy to firebase
+3. run `yarn run deploy-firebase` to deploy to firebase
 
 ### Integration
 
 ```
-<style>#note { display: block; position: relative; margin: 0 auto; height: 300px; width: 350px; overflow: hidden;}
+<style>#form { display: block; position: relative; margin: 0 auto; height: 300px; width: 350px; overflow: hidden;}
 textarea { height: 100px; width: 300px
 </style>
 
-<div id="note">
+<div id="form">
 
 <h2>Create a Note</h2>
 <div id="root"></div>
 
 </div>
-<script async src="https://cdn.jsdelivr.net/gh/alexanderlperez/lacrm-integration@latest/dist/lacrm-integration.197c8d16.js"></script>
+<script async src="ACCESSIBLE_URL/lacrm-integration.js"></script>
 ```
